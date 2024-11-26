@@ -1,22 +1,28 @@
 package com.webmvc.webmvc.controllers;
 
 import com.webmvc.webmvc.dto.EmployeeDTO;
+import com.webmvc.webmvc.services.EmployeeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("employees")
+@RequiredArgsConstructor
 public class EmployeeController {
+
+    private final EmployeeService employeeService;
 
     @GetMapping(path = "/{employeeId}")
     public EmployeeDTO getEmployeeByID(@PathVariable(name = "employeeId") Long id) {
-        return new EmployeeDTO(id, "Harsh", "harsh@gmail.com", 26, LocalDate.of(2021, 01, 18), true);
+        return employeeService.getEmployeeByID(id);
     }
 
     @GetMapping(path = "")
-    public String getAllEmployees(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy) {
-        return "Hi age: " + age + " " + sortBy;
+    public List<EmployeeDTO> getAllEmployees(@RequestParam(required = false) Integer age, @RequestParam(required = false) String sortBy) {
+        return employeeService.getAllEmployees();
     }
 
 }
